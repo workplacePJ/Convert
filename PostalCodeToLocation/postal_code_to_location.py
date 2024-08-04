@@ -171,11 +171,6 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                             result_object['location']['lat'] = address['location']['lat']
                             result_object['location']['lng'] = address['location']['lng']
 
-
-
-
-                            
-                            
                     result['results'].append(result_object)
 
         # error handling\n","
