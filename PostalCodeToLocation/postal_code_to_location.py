@@ -166,8 +166,11 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) or (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) or (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
                         del result_object['kana']['full_address']
 
-
-
+                    if "location" in address:
+                        if ("lat" in address['location'] and address['location']['lat']) and ("lng" in address['location'] and address['location']['lng']):
+                            result_object['location'] = {}
+                            result_object['location']['lat'] = address['location']['lat']
+                            result_object['location']['lng'] = address['location']['lng']
 
 
 
