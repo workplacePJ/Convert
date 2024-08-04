@@ -7,10 +7,14 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
 
     async with aiohttp.ClientSession() as session:
         tasks: list = []
+
+        if "KEY" in kwargs and kwargs['KEY']:
+            API_KEY: str = kwargs['KEY']
+
         for requested_value in requested_values:
             if "postal_code" in requested_value:
                 value: str = requested_value.get('postal_code')
-                tasks.append(convert_postal_code_to_location(session, value))
+                tasks.append(convert_postal_code_to_location(session, value, KEY = API_KEY))
             """
             elif "address" in requested_value:
                 value: str = requested_value.get('address')
