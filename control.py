@@ -23,9 +23,4 @@ async def control(requested_values: list[dict[str, str]]) -> list[dict[str, Any]
             """
         results = await asyncio.gather(*tasks)
 
-        print(results)
-
-#if __name__ == "__main__":
-    #await main([{"postal_code" : "1150052"}, {"postal_code" : "1140034"}, {"postal_code" : "981-2114"}])
-await control([{"postal_code" : "1008111"}, {"postal_code" : "1140052"}, {"postal_code" : "1140034"}, {"postal_code" : "981-2114"}])
-#await control([{"address" : "東京都北区上十条2-25"}])
+    return results
