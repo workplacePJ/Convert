@@ -1,10 +1,10 @@
-from typing import Any, Pattern
+from typing import Any, Pattern, Literal
 import re
 import unicodedata
 import aiohttp
 import asyncio
 
-async def convert_postal_code_to_location(session, postal_code: str) -> dict[str, Any]:
+async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -> dict[str, Any]:
 
     """
     Converts a postal code to an address using a postal code API.
@@ -60,11 +60,11 @@ async def convert_postal_code_to_location(session, postal_code: str) -> dict[str
                     if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) and (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) and (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
 
                         # Build URL
-                        complement_url: str = f"https://postcode.teraren.com/postcodes.json?s={address['ja']['prefecture']}{address['ja']['address1']}{address['ja']['address2']}"
+                        complement_kana_url: str = f"https://postcode.teraren.com/postcodes.json?s={address['ja']['prefecture']}{address['ja']['address1']}{address['ja']['address2']}"
 
                         # API request
                         try:
-                            async with session.get(complement_url) as response:
+                            async with session.get(complement_kana_url) as response:
 
                                 response.raise_for_status()
                                 data_kana: Any = await response.json()
@@ -81,7 +81,44 @@ async def convert_postal_code_to_location(session, postal_code: str) -> dict[str
                             pass
                         except Exception as err:
                             pass
+                    
+                    # complement "lat lng"data
+                    if ("prefecture" in address['ja'] and address['ja']['prefecture']) and ("address1" in address['ja'] and address['ja']['address1']) and ("address2" in address['ja'] and address['ja']['address2']) and ("address3" in address['ja'] and address['ja']['address3']):
 
+                        # Build URL
+                        complement_lat_lng_url: Literal = "https://maps.googleapis.com/maps/api/geocode/json"
+                        
+                        location: str = f"{address['ja']['prefecture']}{address['ja']['address1']}{address['ja']['address2']}{address['ja']['address3']}"
+                        
+                        if "KEY" in kwargs and kwargs['KEY']:
+                            API_KEY: str = kwargs['KEY']
+                        
+                        # API request
+                        try:
+                            params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
+                            
+                            async with session.get(url = complement_lat_lng_url, params = params) as response:
+                                
+                                response.raise_for_status()
+                                data_lat_lng: Any = await response.json()
+
+
+                                if data_lat_lng['results']:
+                                    if data_lat_lng['results'][0]:
+                                        if "geometry" in data_lat_lng['results'][0] and data_lat_lng['results'][0]['geometry']:
+                                            if "location" in data_lat_lng['results'][0]['geometry'] and data_lat_lng['results'][0]['geometry']['location']:
+                                                address['location'] = {}
+                                                if "lat" in data_lat_lng['results'][0]['geometry']['location']:
+                                                    address['location']['lat'] = data_lat_lng['results'][0]['geometry']['location']['lat']
+                                                if "lng" in data_lat_lng['results'][0]['geometry']['location']:
+                                                    address['location']['lng'] = data_lat_lng['results'][0]['geometry']['location']['lng']
+
+                        # error handling
+                        except aiohttp.ClientError as err:
+                            pass
+                        except Exception as err:
+                            pass
+                    
                     # generate "result object"data
                     result_object: dict[str, Any] = {}
 
@@ -129,6 +166,14 @@ async def convert_postal_code_to_location(session, postal_code: str) -> dict[str
                     if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) or (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) or (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
                         del result_object['kana']['full_address']
 
+
+
+
+
+
+
+                            
+                            
                     result['results'].append(result_object)
 
         # error handling\n","
