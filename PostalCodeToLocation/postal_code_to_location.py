@@ -108,9 +108,9 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                                         if "geometry" in data_lat_lng['results'][0] and data_lat_lng['results'][0]['geometry']:
                                             if "location" in data_lat_lng['results'][0]['geometry'] and data_lat_lng['results'][0]['geometry']['location']:
                                                 address['location'] = {}
-                                                if "lat" in data_lat_lng['results'][0]['geometry']['location']:
+                                                if "lat" in data_lat_lng['results'][0]['geometry']['location'] and data_lat_lng['results'][0]['geometry']['location']['lat']:
                                                     address['location']['lat'] = data_lat_lng['results'][0]['geometry']['location']['lat']
-                                                if "lng" in data_lat_lng['results'][0]['geometry']['location']:
+                                                if "lng" in data_lat_lng['results'][0]['geometry']['location'] and data_lat_lng['results'][0]['geometry']['location']['lng']:
                                                     address['location']['lng'] = data_lat_lng['results'][0]['geometry']['location']['lng']
 
                         # error handling
