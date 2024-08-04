@@ -31,6 +31,6 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
 
 
 
-from google.colab import userdata
+#from google.colab import userdata
 
-asyncio.run(control([{ "postal_code" : "1008111" }, { "postal_code" : "115-0052" }, { "postal_code" : "9812114" }], KEY = userdata.get("GOOGLE_MAPS_API_KEY")))
+#asyncio.run(control([{ "postal_code" : "1008111" }, { "postal_code" : "115-0052" }, { "postal_code" : "9812114" }], KEY = userdata.get("GOOGLE_MAPS_API_KEY")))
