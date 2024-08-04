@@ -25,4 +25,4 @@ async def control(requested_values: list[dict[str, str]]) -> list[dict[str, Any]
     return results
     print(result) 
 
-await control([{ "postal_code" : "1140034" },{ "postal_code" : "115-0052" }])
+asyncio.run([{ "postal_code" : "1140034" },{ "postal_code" : "115-0052" }])
