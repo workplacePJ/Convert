@@ -23,3 +23,6 @@ async def control(requested_values: list[dict[str, str]]) -> list[dict[str, Any]
         results = await asyncio.gather(*tasks)
 
     return results
+    print(result) 
+
+await control([{ "postal_code" : "1140034" },{ "postal_code" : "115-0052" }])
