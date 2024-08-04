@@ -29,4 +29,4 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
     #return results
     print(results) 
 
-asyncio.run(control([{ "postal_code" : "1008111" }, { "postal_code" : "115-0052" }, { "postal_code" : "1140034" }], KEY = ""))
+asyncio.run(control([{ "postal_code" : "1008111" }, { "postal_code" : "115-0052" }, { "postal_code" : "1140034" }], KEY = "AIzaSyC7dLXM_6HyFxVvLVPnCLnV2uTdwqgYOKM"))
