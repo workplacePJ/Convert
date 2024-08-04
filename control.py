@@ -1,5 +1,4 @@
 import PostalCodeToLocation
-import postal_code_to_location
 from typing import Any
 import aiohttp
 import asyncio
@@ -11,7 +10,7 @@ async def control(requested_values: list[dict[str, str]]) -> list[dict[str, Any]
         for requested_value in requested_values:
             if "postal_code" in requested_value:
                 value: str = requested_value.get('postal_code')
-                tasks.append(postal_code_to_location.convert_postal_code_to_location(session, value))
+                tasks.append(convert_postal_code_to_location(session, value))
             """
             elif "address" in requested_value:
                 value: str = requested_value.get('address')
