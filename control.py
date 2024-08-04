@@ -3,7 +3,7 @@ from typing import Any
 import aiohttp
 import asyncio
 
-async def control(requested_values: list[dict[str, str]]) -> list[dict[str, Any]]:
+async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict[str, Any]]:
 
     async with aiohttp.ClientSession() as session:
         tasks: list = []
