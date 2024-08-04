@@ -1,3 +1,9 @@
+from typing import Any, Pattern
+import re
+import unicodedata
+import aiohttp
+import asyncio
+
 async def convert_postal_code_to_location(session, postal_code: str) -> dict[str, Any]:
 
     """
