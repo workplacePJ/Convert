@@ -1,1 +1,1 @@
-from PostalCodeToLocation.postal_code_to_location import 
+from PostalCodeToLocation.postal_code_to_location import convert_postal_code_to_location
