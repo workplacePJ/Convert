@@ -13,6 +13,10 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
         postal_code: The postal code to convert.
     Returns:
         A dictionary containing the location information or error information if an error occurs.
+
+    API:
+        *PostcodeJp
+            https://console.postcode-jp.com/dashbord
     """
 
     # generate "result"data
