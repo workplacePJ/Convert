@@ -21,6 +21,9 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
     # generate "result"data
     result: dict[str, Any] = {}
 
+    # postal code formatting
+    postal_code = unicodedata.normalize('NFKC', postal_code)
+    
     pattern__judgment_of_postal_code: Pattern[str] = re.compile(r'^(?=.*[0-9]{3}-[0-9]{4})(?=.*[0-9-]{8})(?!.*[0-9-]{9,}).*$|^(?=.*[0-9]{7})(?!.*[0-9-]{8,}).*$')
 
     if pattern__judgment_of_postal_code.search(postal_code):
@@ -39,43 +42,41 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
         #url: str = f"https://workplacepj.github.io/jp-postal-code-api/docs/api/v1/{non_hyphenated_postal_code}.json"
         base_url: Literal = "https://apis.postcode-jp.com/api/v6"
         url: str = f"{base_url}/postcodes/{non_hyphenated_postal_code}"
-
-
-if "KEY" in kwargs and kwargs['KEY']:
-                            API_KEY: str = kwargs['KEY']
-                        
-                        # API request
-                        try:
-                            params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
-                            
-                            async with session.get(url = complement_lat_lng_url, params = params) as response:
-                                
-
-
-
-
+        
+        # API_KEY
+        API_KEY: str = kwargs.get('KEY', '')
+        
+        # headers
+        headers: dict[str, str] = {"Content-Type": "application/json", "apikey": API_KEY}
         
         # API request
         try:
-            async with session.get(url) as response:
+            async with session.get(url = url, headers = headers) as response:
 
                 response.raise_for_status()
                 data: Any = await response.json()
-
+                
                 result['status_code'] = response.status
                 result['is_success'] = True
                 result['convert_from'] = "postal_code"
                 result['requested_value'] = postal_code
                 result['results'] = []
 
-                for address in data['addresses']:
 
+
+                for item in data:
+                    
+
+
+                
+                #for address in data['addresses']:
+                    """
                     # data formatting
                     if "address3" in address['ja'] and address['ja']['address3']:
                         address['ja']['address3'] = unicodedata.normalize('NFKC', address['ja']['address3'])
                         if "address3" in address['kana']:
                             address['kana']['address3'] = address['ja']['address3']
-
+                    
                     # complement "kana"data
                     if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) and (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) and (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
 
@@ -101,7 +102,8 @@ if "KEY" in kwargs and kwargs['KEY']:
                             pass
                         except Exception as err:
                             pass
-                    
+                    """
+                    """
                     # complement "lat lng"data
                     if ("prefecture" in address['ja'] and address['ja']['prefecture']) and ("address1" in address['ja'] and address['ja']['address1']) and ("address2" in address['ja'] and address['ja']['address2']) and ("address3" in address['ja'] and address['ja']['address3']):
 
@@ -138,9 +140,22 @@ if "KEY" in kwargs and kwargs['KEY']:
                             pass
                         except Exception as err:
                             pass
+                    """
                     
                     # generate "result object"data
                     result_object: dict[str, Any] = {}
+
+                    # Assign value to "result object"data
+                    if "" in item:
+                        result_object[''] = item.get('', '')
+
+
+
+                    
+
+
+
+                    
 
                     # Assign value to "result object"data
                     if "postalCode" in data and data['postalCode']:
