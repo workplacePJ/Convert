@@ -63,6 +63,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                 result['results'] = []
 
                 pattern__further_divisions: Pattern[str] = re.compile(r'([0-9-０-９－]+$')
+                
                 for item in data:
                 
                 #for address in data['addresses']:
@@ -154,7 +155,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         result_object['ja']['city'] = item.get('city')
                     if "town" in item:
                         result_object['ja']['suburb'] = item.get('town')
-                    if "" in item:
+                    if 
                         result_object['ja']['further_divisions'] = item.get('')
                     if "office" in item:
                         result_object['ja']['enterprise_place'] = item.get('office')
@@ -162,20 +163,28 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         result_object['ja']['full_address'] = item.get('allAddress')
 
                     result_object['kana'] = {}
-                    if "" in item:
-                        result_object['kana']['prefecture'] = item.get('')
-                    if "" in item:
-                        result_object['kana']['city'] = item.get('')
-                    if "" in item:
-                        result_object['kana']['suburb'] = item.get('')
-                    if "" in item:
-                        result_object['kana']['further_divisions'] = item.get('')
-                    if "" in item:
-                        result_object['kana']['enterprise_place'] = item.get('')
-                    if "" in item:
-                        result_object['kana']['full_address'] = item.get('')
+                    if "fullWidthKana" in item:
+                        if "pref" in item['fullWidthKana']:
+                            result_object['kana']['prefecture'] = item['fullWidthKana'].get('pref')
+                        if "city" in item['fullWidthKana']:
+                            result_object['kana']['city'] = item['fullWidthKana'].get('city')
+                        if "town" in item['fullWidthKana']:
+                            result_object['kana']['suburb'] = item['fullWidthKana'].get('town')
+                        if 
+                            result_object['kana']['further_divisions'] = item['fullWidthKana'].get('')
+                        if "office" in item['fullWidthKana']:
+                            result_object['kana']['enterprise_place'] = item['fullWidthKana'].get('office')
+                        if "allAddress" in item['fullWidthKana']:
+                            result_object['kana']['full_address'] = item['fullWidthKana'].get('allAddress')
                     
-                    if "" in item:
+                    if "ja" in result_object:
+                        if "further_divisions" in result_object['ja']:
+                            if "location" in item:
+                                result_object['location'] = {}
+                                if "latitude" in item['location']:
+                                result_object['location']['lat'] = address['location']['lat']
+                                if "longitude" in item['location']:
+                                result_object['location']['lng'] = address['location']['lng']
                     
                     """
                     # Assign value to "result object"data
