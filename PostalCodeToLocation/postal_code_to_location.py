@@ -36,8 +36,25 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
             non_hyphenated_postal_code: str = pattern__non_hyphenated_postal_code.search(postal_code).group()
 
         # Build URL
-        url: str = f"https://workplacepj.github.io/jp-postal-code-api/docs/api/v1/{non_hyphenated_postal_code}.json"
+        #url: str = f"https://workplacepj.github.io/jp-postal-code-api/docs/api/v1/{non_hyphenated_postal_code}.json"
+        base_url: Literal = "https://apis.postcode-jp.com/api/v6"
+        url: str = f"{base_url}/postcodes/{non_hyphenated_postal_code}"
 
+
+if "KEY" in kwargs and kwargs['KEY']:
+                            API_KEY: str = kwargs['KEY']
+                        
+                        # API request
+                        try:
+                            params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
+                            
+                            async with session.get(url = complement_lat_lng_url, params = params) as response:
+                                
+
+
+
+
+        
         # API request
         try:
             async with session.get(url) as response:
