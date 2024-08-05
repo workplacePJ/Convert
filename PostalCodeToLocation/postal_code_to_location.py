@@ -62,7 +62,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                 result['requested_value'] = postal_code
                 result['results'] = []
 
-                pattern__further_divisions: Pattern[str] = re.compile(r'([0-9-０-９－]+$')
+                pattern__further_divisions: Pattern[str] = re.compile(r'([0-9０-９-－]+)$')
                 
                 for item in data:
                 
