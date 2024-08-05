@@ -156,7 +156,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     if "town" in item:
                         result_object['ja']['suburb'] = item.get('town')
                     if 
-                        result_object['ja']['further_divisions'] = item.get('')
+                        result_object['ja']['further_divisions'] =                 pattern__further_divisions: Pattern[str] = re.compile(r'([0-9０-９-－]+)$').search(item.get('town')).group()
                     if "office" in item:
                         result_object['ja']['enterprise_place'] = item.get('office')
                     if "allAddress" in item:
