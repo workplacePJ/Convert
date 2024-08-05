@@ -171,6 +171,8 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         if "city" in item['fullWidthKana']:
                             result_object['kana']['city'] = item['fullWidthKana'].get('city')
                         if "town" in item['fullWidthKana']:
+                            if pattern__further_divisions.search(item['fullWidthKana'].get('town')):
+                                result_object['kana']['further_divisions'] = pattern__further_divisions.search(item['fullWidthKana'].get('town')).group()
                             result_object['kana']['suburb'] = item['fullWidthKana'].get('town')
                         if 
                             result_object['kana']['further_divisions'] = item['fullWidthKana'].get('')
