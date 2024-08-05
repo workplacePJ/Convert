@@ -150,7 +150,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     
                     result_object['ja'] = {}
                     if "pref" in item:
-                    result_object['ja']['prefecture'] = item.get('pref')
+                        result_object['ja']['prefecture'] = item.get('pref')
                     if "city" in item:
                         result_object['ja']['city'] = item.get('city')
                     if "town" in item:
