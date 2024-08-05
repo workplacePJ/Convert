@@ -62,12 +62,8 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                 result['requested_value'] = postal_code
                 result['results'] = []
 
-
-
+                pattern__further_divisions: Pattern[str] = re.compile(r'([0-9-０-９－]+$')
                 for item in data:
-                    
-
-
                 
                 #for address in data['addresses']:
                     """
@@ -146,33 +142,42 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     result_object: dict[str, Any] = {}
 
                     # Assign value to "result object"data
-                    if "" in item:
-                        result_object[''] = item.get('')
-                    if "" in item:
-                        result_object['ja'][''] = item.get('')
-
                     if "postcode" in item:
                         result_object['postal_code'] = item.get('postcode')
                     if "prefCode" in item:
                         result_object['prefecture_code'] = item.get('prefCode')
+                    
                     result_object['ja'] = {}
                     if "pref" in item:
                     result_object['ja']['prefecture'] = item.get('pref')
+                    if "city" in item:
+                        result_object['ja']['city'] = item.get('city')
+                    if "town" in item:
+                        result_object['ja']['suburb'] = item.get('town')
                     if "" in item:
-                        result_object['ja'][''] = item.get('')
+                        result_object['ja']['further_divisions'] = item.get('')
+                    if "office" in item:
+                        result_object['ja']['enterprise_place'] = item.get('office')
+                    if "allAddress" in item:
+                        result_object['ja']['full_address'] = item.get('allAddress')
+
+                    result_object['kana'] = {}
                     if "" in item:
-                        result_object['ja'][''] = item.get('')
+                        result_object['kana']['prefecture'] = item.get('')
                     if "" in item:
-                        result_object['ja'][''] = item.get('')
-
-
-
+                        result_object['kana']['city'] = item.get('')
+                    if "" in item:
+                        result_object['kana']['suburb'] = item.get('')
+                    if "" in item:
+                        result_object['kana']['further_divisions'] = item.get('')
+                    if "" in item:
+                        result_object['kana']['enterprise_place'] = item.get('')
+                    if "" in item:
+                        result_object['kana']['full_address'] = item.get('')
                     
-
-
-
+                    if "" in item:
                     
-
+                    """
                     # Assign value to "result object"data
                     if "postalCode" in data and data['postalCode']:
                         result_object['postal_code'] = data['postalCode']
@@ -197,6 +202,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         result_object['ja']['full_address'] += ' ' + address['ja']['address4']
                     if (not "prefecture" in address['ja'] or ("prefecture" in address['ja'] and not address['ja']['prefecture'])) or (not "address1" in address['ja'] or ("address1" in address['ja'] and not address['ja']['address1'])) or (not "address2" in address['ja'] or ("address2" in address['ja'] and not address['ja']['address2'])):
                         del result_object['ja']['full_address']
+                    
                     result_object['kana'] = {}
                     result_object['kana']['full_address'] = ""
                     if "prefecture" in address['kana'] and address['kana']['prefecture']:
@@ -221,7 +227,8 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                             result_object['location'] = {}
                             result_object['location']['lat'] = address['location']['lat']
                             result_object['location']['lng'] = address['location']['lng']
-
+                    """
+                    
                     result['results'].append(result_object)
 
         # error handling\n","
