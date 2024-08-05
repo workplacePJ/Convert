@@ -181,7 +181,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         if "further_divisions" in result_object['ja']:
                             if "location" in item:
                                 if "latitude" in item['location'] or "longitude" in item['location']:
-                                result_object['location'] = {}
+                                    result_object['location'] = {}
                                 if "latitude" in item['location']:
                                     result_object['location']['lat'] = item['location'].get('latitude')
                                 if "longitude" in item['location']:
