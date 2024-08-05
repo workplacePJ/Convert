@@ -164,8 +164,8 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     if "allAddress" in item:
                         result_object['ja']['full_address'] = item.get('allAddress')
 
-                    result_object['kana'] = {}
                     if "fullWidthKana" in item:
+                        result_object['kana'] = {}
                         if "pref" in item['fullWidthKana']:
                             result_object['kana']['prefecture'] = item['fullWidthKana'].get('pref')
                         if "city" in item['fullWidthKana']:
