@@ -117,58 +117,6 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                                     if "longitude" in item['location']:
                                         result_object['location']['lng'] = item['location'].get('longitude')
                     
-                    """
-                    # Assign value to "result object"data
-                    if "postalCode" in data and data['postalCode']:
-                        result_object['postal_code'] = data['postalCode']
-                    if "prefectureCode" in address and address['prefectureCode']:
-                        result_object['prefecture_code'] = address['prefectureCode']
-                    result_object['ja'] = {}
-                    result_object['ja']['full_address'] = ""
-                    if "prefecture" in address['ja'] and address['ja']['prefecture']:
-                        result_object['ja']['prefecture'] = address['ja']['prefecture']
-                        result_object['ja']['full_address'] += address['ja']['prefecture']
-                    if "address1" in address['ja'] and address['ja']['address1']:
-                        result_object['ja']['city'] = address['ja']['address1']
-                        result_object['ja']['full_address'] += address['ja']['address1']
-                    if "address2" in address['ja'] and address['ja']['address2']:
-                        result_object['ja']['suburb'] = address['ja']['address2']
-                        result_object['ja']['full_address'] += address['ja']['address2']
-                    if "address3" in address['ja'] and address['ja']['address3']:
-                        result_object['ja']['further_divisions'] = address['ja']['address3']
-                        result_object['ja']['full_address'] += address['ja']['address3']
-                    if "address4" in address['ja'] and address['ja']['address4']:
-                        result_object['ja']['enterprise_place'] = address['ja']['address4']
-                        result_object['ja']['full_address'] += ' ' + address['ja']['address4']
-                    if (not "prefecture" in address['ja'] or ("prefecture" in address['ja'] and not address['ja']['prefecture'])) or (not "address1" in address['ja'] or ("address1" in address['ja'] and not address['ja']['address1'])) or (not "address2" in address['ja'] or ("address2" in address['ja'] and not address['ja']['address2'])):
-                        del result_object['ja']['full_address']
-                    
-                    result_object['kana'] = {}
-                    result_object['kana']['full_address'] = ""
-                    if "prefecture" in address['kana'] and address['kana']['prefecture']:
-                        result_object['kana']['prefecture'] = address['kana']['prefecture']
-                        result_object['kana']['full_address'] += address['kana']['prefecture']
-                    if "address1" in address['kana'] and address['kana']['address1']:
-                        result_object['kana']['city'] = address['kana']['address1']
-                        result_object['kana']['full_address'] += address['kana']['address1']
-                    if "address2" in address['kana'] and address['kana']['address2']:
-                        result_object['kana']['suburb'] = address['kana']['address2']
-                        result_object['kana']['full_address'] += address['kana']['address2']
-                    if "address3" in address['kana'] and address['kana']['address3']:
-                        result_object['kana']['further_divisions'] = address['kana']['address3']
-                        result_object['kana']['full_address'] += address['kana']['address3']
-                    if "address4" in address['kana'] and address['kana']['address4']:
-                        result_object['kana']['enterprise_place'] = address['kana']['address4']
-                        result_object['kana']['full_address'] += ' ' + address['kana']['address4']
-                    if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) or (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) or (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
-                        del result_object['kana']['full_address']
-                    if "location" in address:
-                        if ("lat" in address['location'] and address['location']['lat']) and ("lng" in address['location'] and address['location']['lng']):
-                            result_object['location'] = {}
-                            result_object['location']['lat'] = address['location']['lat']
-                            result_object['location']['lng'] = address['location']['lng']
-                    """
-                    
                     result['results'].append(result_object)
 
         # error handling\n","
