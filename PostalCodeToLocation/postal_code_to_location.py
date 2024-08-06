@@ -39,7 +39,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
             non_hyphenated_postal_code: str = pattern__non_hyphenated_postal_code.search(postal_code).group()
 
         # Build URL
-        base_url: Literal = "https://apis.postcode-jp.com/api/v6"
+        base_url: str = "https://apis.postcode-jp.com/api/v6"
         url: str = f"{base_url}/postcodes/{non_hyphenated_postal_code}"
         
         # API_KEY
