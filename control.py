@@ -16,7 +16,7 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
             """
             elif "address" in requested_value:
                 value: str = requested_value.get('address')
-                tasks.append(convert_location_to_postal_code(session, "address", value))
+                tasks.append(convert_location_to_postal_code(session, "address", value, KEY = kwargs.get('GOOGLE_MAPS_API_KEY', '')))
 
             elif "landmark" in requested_value:
                 value: str = requested_value.get('landmark')
