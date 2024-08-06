@@ -12,6 +12,7 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
             if "postal_code" in requested_value:
                 value: str = requested_value.get('postal_code')
                 tasks.append(convert_postal_code_to_location(session, value, KEY = kwargs.get('KEY', '')))
+                await asyncio.sleep(1)
             """
             elif "address" in requested_value:
                 value: str = requested_value.get('address')
