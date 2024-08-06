@@ -51,22 +51,19 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
         # API request
         try:
             async with session.get(url = url, headers = headers) as response:
-
                 response.raise_for_status()
                 data: Any = await response.json()
 
                 if data:
-                    
                     result['status_code'] = response.status
                     result['is_success'] = True
                     result['convert_from'] = "postal_code"
                     result['requested_value'] = postal_code
                     result['results'] = []
-    
+                    
                     pattern__further_divisions: Pattern[str] = re.compile(r'([0-9０-９-－]+)$')
                     
                     for item in data:
-                        
                         # generate "result object"data
                         result_object: dict[str, Any] = {}
     
