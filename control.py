@@ -23,6 +23,6 @@ async def control(requested_values: list[dict[str, str]], **kwargs) -> list[dict
                 tasks.append(convert_location_to_postal_code(session, "landmark", value))
             """
         results = await asyncio.gather(*tasks)
-
-    print(results) 
+    
+    return results
 #asyncio.run(control([{ "postal_code" : "1008111" }, { "postal_code" : "115-0052" }, { "postal_code" : "9812114" }], KEY = userdata.get("GOOGLE_MAPS_API_KEY")))
