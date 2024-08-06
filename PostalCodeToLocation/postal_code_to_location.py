@@ -104,7 +104,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                             if "office" in item['fullWidthKana']:
                                 result_object['kana']['enterprise_place'] = item['fullWidthKana'].get('office')
                             if "allAddress" in item['fullWidthKana']:
-                                result_object['kana']['full_address'] = item['fullWidthKana'].get('allAddress')
+                                result_object['kana']['full_address'] = item['fullWidthKana'].get('allAddress').replace('\u3000','　')
                         
                         if "ja" in result_object:
                             if "further_divisions" in result_object['ja']:
