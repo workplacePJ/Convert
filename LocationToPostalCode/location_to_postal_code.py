@@ -51,8 +51,16 @@ async def convert_location_to_postal_code(session, location_type: Literal["addre
                 
                 for address_component in address_components:
                     # Assign value to "acquired_object"data
-                    if "sublocality_level_3" in address_component['types'] or "sublocality_level_3" in address_component['types'] or "sublocality_level_3" in address_component['types']:
-                        acquired_object['further_divisions'] = {}
+                    if "sublocality_level_3" in address_component['types'] or "sublocality_level_4" in address_component['types'] or "premise" in address_component['types']:
+                        if not "further_divisions" in acquired_object:
+                            acquired_object['further_divisions'] = {}
+                        
+                        if "sublocality_level_3" in address_component['types']:
+                            acquired_object['further_divisions']['chome'] = re.sub(r'[^0-9０-９]+', '', address_component['long_name'])
+                        elif "sublocality_level_4" in address_component['types']:
+                        elif "premise" in address_component['types']:
+                        
+                        
                     elif "postal_code" in address_component['types']:
                         acquired_object['postal_code'] = address_component['long_name'].replace('-','')
                     elif "administrative_area_level_1" in address_component['types']:
@@ -63,7 +71,9 @@ async def convert_location_to_postal_code(session, location_type: Literal["addre
                         acquired_object['suburb'] = address_component['long_name']
 
                     
-                        
+
+
+                    
                     elif "sublocality_level_3" in address_component['types']:
                         chome: str = unicodedata.normalize('NFKC', address_component['long_name'])
                         acquired_object['further_divisions']['chome'] = re.sub(r'\D', '', chome)
