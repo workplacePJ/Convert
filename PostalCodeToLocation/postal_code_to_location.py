@@ -122,7 +122,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                         result['results'].append(result_object)
                         
                 else:
-                    result['status_code'] = None
+                    result['status_code'] = response.status
                     result['is_success'] = False
                     result['convert_from'] = "postal_code"
                     result['requested_value'] = postal_code
