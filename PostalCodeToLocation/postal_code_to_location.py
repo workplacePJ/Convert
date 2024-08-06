@@ -120,9 +120,13 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                                             result_object['location']['lng'] = item['location'].get('longitude')
                         
                         result['results'].append(result_object)
+                        
                 else:
-                    
-                    raise Http404
+                    result['status_code'] = None
+                    result['is_success'] = False
+                    result['convert_from'] = "postal_code"
+                    result['requested_value'] = postal_code
+                    result['error'] = "Error: Matching value was not found"
                     
         # error handling","
         except aiohttp.ClientError as err:
@@ -137,7 +141,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
             result['is_success'] = False
             result['convert_from'] = "postal_code"
             result['requested_value'] = postal_code
-            result['error'] = "Unexpected error: An unexpected error has occurred."
+            result['error'] = "Unexpected error: An unexpected error has occurred"
 
     else:
         result['status_code'] = None
