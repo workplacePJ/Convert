@@ -4,6 +4,68 @@ import unicodedata
 import aiohttp
 import asyncio
 
+async def convert_location_to_postal_code(session, location_type: Literal["address", "landmark"], location: str, **kwargs) -> dict[str, Any]:
+    """
+    Converts a location to an postal code using a geo API.
+    Args:
+        session: aiohttp.ClientSession()
+        location_type: Location type
+        location: The location to convert.
+    Returns:
+        A dictionary containing the postal code information or error information if an error occurs.
+    API used:
+        Google maps Platform
+        https://console.cloud.google.com/google/maps-apis/api-list?project=api-project-430803&authuser=2&hl=ja
+    """
+    
+    # generate "result"data
+    result: dict[str, Any] = {}
+
+    if location:
+        # Build URL
+        base_url: str = "https://maps.googleapis.com/maps/api/geocode/json"
+        
+        # API_KEY
+        API_KEY: str = kwargs.get('KEY', '')
+    
+        # params
+        params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
+
+        # API request
+        try:
+            async with session.get(url = base_url, params = params) as response:
+                response.raise_for_status()
+                data: Any = await response.json()
+                
+                # address element of data
+                address_components: list[dict[str, Any]] = data['results'][0]['address_components']
+                
+                if location_type == "address":
+                    # generate "acquired object"data
+                    acquired_object: dict[str, str] = {}
+                    acquired_object['further_divisions'] = {}
+
+                
+                elif location_type == "landmark":
+
+                    
+                for address_component in address_components:
+    
+    else:
+        result['status_code'] = None
+        result['is_success'] = False
+        result['convert_from'] = location_type
+        result['requested_value'] = location
+        result['error'] = "Error: Matching value was not found"
+                        
+
+
+
+
+
+
+        
+
 async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -> dict[str, Any]:
 
     """
@@ -190,36 +252,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
 
 
 
-async def convert_location_to_postal_code(session, location_type: str, location: str) -> dict[str, Any]:
-    """
-    Converts a location to an postal code using a geo API.
-    Args:
-        session: aiohttp.ClientSession()
-        location: The location to convert.
-    Returns:
-        A dictionary containing the postal code information or error information if an error occurs.
-    """
-    # generate "result"data
-    result: dict[str, Any] = {}
-
-    # API request
-    try:
-        url: Literal = "https://maps.googleapis.com/maps/api/geocode/json"
-        API_KEY: Literal = "AIzaSyC7dLXM_6HyFxVvLVPnCLnV2uTdwqgYOKM"
-        params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
-
-        async with session.get(url = url, params = params) as response:
-
-            response.raise_for_status()
-            data: Any = await response.json()
-
-            # address element of data
-            address_components: list[dict[str, str | list]] = data['results'][0]['address_components']
-
-            if "address" in location_type:
-                # generate "acquired object"data
-                acquired_object: dict[str, str] = {}
-                acquired_object['further_divisions'] = {}
+            
 
                 for address_component in address_components:
 
