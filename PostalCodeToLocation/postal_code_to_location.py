@@ -39,7 +39,6 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
             non_hyphenated_postal_code: str = pattern__non_hyphenated_postal_code.search(postal_code).group()
 
         # Build URL
-        #url: str = f"https://workplacepj.github.io/jp-postal-code-api/docs/api/v1/{non_hyphenated_postal_code}.json"
         base_url: Literal = "https://apis.postcode-jp.com/api/v6"
         url: str = f"{base_url}/postcodes/{non_hyphenated_postal_code}"
         
@@ -65,79 +64,6 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                 pattern__further_divisions: Pattern[str] = re.compile(r'([0-9０-９-－]+)$')
                 
                 for item in data:
-                
-                #for address in data['addresses']:
-                    """
-                    # data formatting
-                    if "address3" in address['ja'] and address['ja']['address3']:
-                        address['ja']['address3'] = unicodedata.normalize('NFKC', address['ja']['address3'])
-                        if "address3" in address['kana']:
-                            address['kana']['address3'] = address['ja']['address3']
-                    
-                    # complement "kana"data
-                    if (not "prefecture" in address['kana'] or ("prefecture" in address['kana'] and not address['kana']['prefecture'])) and (not "address1" in address['kana'] or ("address1" in address['kana'] and not address['kana']['address1'])) and (not "address2" in address['kana'] or ("address2" in address['kana'] and not address['kana']['address2'])):
-
-                        # Build URL
-                        complement_kana_url: str = f"https://postcode.teraren.com/postcodes.json?s={address['ja']['prefecture']}{address['ja']['address1']}{address['ja']['address2']}"
-
-                        # API request
-                        try:
-                            async with session.get(complement_kana_url) as response:
-
-                                response.raise_for_status()
-                                data_kana: Any = await response.json()
-
-                                if "prefecture_kana" in data_kana[0] and data_kana[0]['prefecture_kana']:
-                                    address['kana']['prefecture'] = data_kana[0]['prefecture_kana']
-                                if "city_kana" in data_kana[0] and data_kana[0]['city_kana']:
-                                    address['kana']['address1'] = data_kana[0]['city_kana']
-                                if "suburb_kana" in data_kana[0] and data_kana[0]['suburb_kana']:
-                                    address['kana']['address2'] = data_kana[0]['suburb_kana']
-
-                        # error handling
-                        except aiohttp.ClientError as err:
-                            pass
-                        except Exception as err:
-                            pass
-                    """
-                    """
-                    # complement "lat lng"data
-                    if ("prefecture" in address['ja'] and address['ja']['prefecture']) and ("address1" in address['ja'] and address['ja']['address1']) and ("address2" in address['ja'] and address['ja']['address2']) and ("address3" in address['ja'] and address['ja']['address3']):
-
-                        # Build URL
-                        complement_lat_lng_url: Literal = "https://maps.googleapis.com/maps/api/geocode/json"
-                        
-                        location: str = f"{address['ja']['prefecture']}{address['ja']['address1']}{address['ja']['address2']}{address['ja']['address3']}"
-                        
-                        if "KEY" in kwargs and kwargs['KEY']:
-                            API_KEY: str = kwargs['KEY']
-                        
-                        # API request
-                        try:
-                            params: dict[str, str] = { "key" : API_KEY, "language" : "ja", "address" : location}
-                            
-                            async with session.get(url = complement_lat_lng_url, params = params) as response:
-                                
-                                response.raise_for_status()
-                                data_lat_lng: Any = await response.json()
-
-
-                                if data_lat_lng['results']:
-                                    if data_lat_lng['results'][0]:
-                                        if "geometry" in data_lat_lng['results'][0] and data_lat_lng['results'][0]['geometry']:
-                                            if "location" in data_lat_lng['results'][0]['geometry'] and data_lat_lng['results'][0]['geometry']['location']:
-                                                address['location'] = {}
-                                                if "lat" in data_lat_lng['results'][0]['geometry']['location'] and data_lat_lng['results'][0]['geometry']['location']['lat']:
-                                                    address['location']['lat'] = data_lat_lng['results'][0]['geometry']['location']['lat']
-                                                if "lng" in data_lat_lng['results'][0]['geometry']['location'] and data_lat_lng['results'][0]['geometry']['location']['lng']:
-                                                    address['location']['lng'] = data_lat_lng['results'][0]['geometry']['location']['lng']
-
-                        # error handling
-                        except aiohttp.ClientError as err:
-                            pass
-                        except Exception as err:
-                            pass
-                    """
                     
                     # generate "result object"data
                     result_object: dict[str, Any] = {}
@@ -156,7 +82,7 @@ async def convert_postal_code_to_location(session, postal_code: str, **kwargs) -
                     if "town" in item:
                         if pattern__further_divisions.search(item.get('town')):
                             result_object['ja']['suburb'] = item.get('town').replace(pattern__further_divisions.search(item.get('town')).group(), '')
-                            result_object['ja']['further_divisions'] =                 pattern__further_divisions.search(item.get('town')).group()
+                            result_object['ja']['further_divisions'] = pattern__further_divisions.search(item.get('town')).group()
                         else:
                             result_object['ja']['suburb'] = item.get('town')
                     if "office" in item:
