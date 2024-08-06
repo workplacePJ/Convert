@@ -58,8 +58,12 @@ async def convert_location_to_postal_code(session, location_type: Literal["addre
                         if "sublocality_level_3" in address_component['types']:
                             acquired_object['further_divisions']['chome'] = re.sub(r'[^0-9０-９]+', '', address_component['long_name'])
                         elif "sublocality_level_4" in address_component['types']:
+                            acquired_object['further_divisions']['banchi'] = address_component['long_name']
                         elif "premise" in address_component['types']:
-                        
+                            if address_component['long_name'].isdecimal():
+                                acquired_object['further_divisions']['gou'] = address_component['long_name']
+                            else:
+                                acquired_object['building_name'] = address_component['long_name']
                         
                     elif "postal_code" in address_component['types']:
                         acquired_object['postal_code'] = address_component['long_name'].replace('-','')
@@ -69,23 +73,6 @@ async def convert_location_to_postal_code(session, location_type: Literal["addre
                         acquired_object['city'] = address_component['long_name']
                     elif "sublocality_level_2" in address_component['types']:
                         acquired_object['suburb'] = address_component['long_name']
-
-                    
-
-
-                    
-                    elif "sublocality_level_3" in address_component['types']:
-                        chome: str = unicodedata.normalize('NFKC', address_component['long_name'])
-                        acquired_object['further_divisions']['chome'] = re.sub(r'\D', '', chome)
-                        
-                    elif "sublocality_level_4" in address_component['types']:
-                        acquired_object['further_divisions']['banchi'] = unicodedata.normalize('NFKC', address_component['long_name'])
-                    
-                    elif "premise" in address_component['types']:
-                        if address_component['long_name'].isdecimal():
-                            acquired_object['further_divisions']['gou'] = unicodedata.normalize('NFKC', address_component['long_name'])
-                        else:
-                            acquired_object['building_name'] = address_component['long_name']
 
 
 
